@@ -1,1 +1,1 @@
-console.log('Hello osroot code');
+let number;
