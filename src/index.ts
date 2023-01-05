@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import ratelimit from 'express-rate-limit';
 import errorMiddleware from "./middlewares/error.middleware";
+import Client from "./databaseConn";
 const app: Application = express();
 const PORT = 7000;
 app.use(morgan("common"))
@@ -33,6 +34,17 @@ app.use((_req:Request , res:Response) => {
   })
 })
 app.use(errorMiddleware)
+// Test db connection
+async function showTime(){
+  const conn = await Client.connect();
+  const query = "SELECT now();";
+  const result = await conn.query(query);
+  conn.release();
+  console.log(result.rows);
+  
+}
+
+showTime();
 
 app.listen(PORT, (): void => {
   // eslint-disable-next-line no-console
